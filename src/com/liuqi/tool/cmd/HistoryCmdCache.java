@@ -49,7 +49,10 @@ public class HistoryCmdCache implements Serializable {
                 querySet = Arrays.stream(str.split(SPLIT_BETWEEN_CMDS)).map(line -> {
                     String[] pLine = line.split(SPLIT_INTERNAL_CMD_REGEX);
                     String name = pLine[0];
-                    String cmds = pLine[1];
+                    String cmds = "";
+                    if (2 == pLine.length) {
+                        cmds = pLine[1];
+                    }
 
                     HistoryCmd historyCmd = new HistoryCmd();
                     historyCmd.setName(name);
