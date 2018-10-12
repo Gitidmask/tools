@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<app>
+    <panel title="待办事项" configFile="todo" type="treeTable">
+        <search>
+            <select default="未完成">
+                <item name="所有"/>
+                <item name="未完成" key="step" value="!(已上线,完成)"/>
+            </select>
+        </search>
+        <rowFill>
+            <if key="step" value="已上线" ret="#c7c7c7"/>
+            <elif key="step" value="完成" ret="#c7c7c7"/>
+            <elif key="step" value="待上线" ret="#22B14C"/>
+			<elif key="step" value="测试中" ret="#B7910E"/>
+            <else ret="black"/>
+        </rowFill>
+        <comparator>
+			<order index="1" key="step" order="已上线,完成"/>
+            <order index="2" key="actualDate" orderBy="asc"/>
+            <order index="3" key="planDate" orderBy="desc"/>
+        </comparator>
+        <beforeSave>
+            <if key="step" value="已上线">
+                <if key="actualDate" value="empty">
+                    <prop key="actualDate" value="nowDate"/>
+                </if>
+            </if>
+			<elif key="step" value="完成">
+				<if key="actualDate" value="empty">
+					<prop key="actualDate" value="nowDate"/>
+				</if>
+			</elif>
+            <else>
+                <prop key="actualDate" value="null"/>
+            </else>
+        </beforeSave>
+        <nodeExpand>
+            <if key="step" value="已上线,完成,待上线" ret="false"/>
+            <else ret="true"/>
+        </nodeExpand>
+    </panel>
+    <panel title="我的待办" configFile="myTodo" display="true">
+        <rowFill>
+            <if key="status" value="true" ret="gray"/>
+            <else ret="black"/>
+        </rowFill>
+        <comparator>
+            <order index="1" key="status" value="false,true" orderBy="desc"/>
+        </comparator>
+        <beforeSave>
+            <if key="status" value="true">
+                <if key="actualDate" value="empty">
+                    <prop key="actualDate" value="nowDate"/>
+                </if>
+            </if>
+            <else>
+                <prop key="actualDate" value="null"/>
+            </else>
+        </beforeSave>
+    </panel>
+
+    <panel title="系统用户" configFile="user" display="true">
+		<rowFill>
+            <if key="env" value="开发" ret="#0C561C"/>
+            <elif key="env" value="测试" ret="#4E5D09"/>
+            <elif key="env" value="生产" ret="#870E0E"/>
+            <else ret="black"/>
+        </rowFill>
+        <comparator>
+            <order index="1" key="project"/>
+			<order index="2" key="env"/>
+        </comparator>
+    </panel>
+
+    <panel title="环境信息" configFile="env" display="true">
+		<rowFill>
+            <if key="env" value="开发" ret="#0C561C"/>
+            <elif key="env" value="测试" ret="#4E5D09"/>
+            <elif key="env" value="生产" ret="#870E0E"/>
+            <else ret="black"/>
+        </rowFill>
+        <comparator>
+            <order index="1" key="env" value="开发,测试,预发,生产"/>
+        </comparator>
+    </panel>
+
+    <panel title="招聘管理" configFile="employment">
+        <rowFill>
+            <if key="step" value="结束" ret="#c7c7c7"/>
+            <elif key="step" value="通过" ret="DARKGREEN"/>
+            <elif key="step" value="邮件沟通" ret="yellowgreen"/>
+            <else ret="black"/>
+        </rowFill>
+        <comparator>
+            <order index="1" key="step" value="通过,邮件沟通,结束" orderBy="desc"/>
+            <order index="2" key="actualDate" orderBy="asc"/>
+            <order index="3" key="addDate" orderBy="desc"/>
+        </comparator>
+        <beforeSave>
+            <if key="step" value="结束">
+                <if key="actualDate" value="empty">
+                    <prop key="actualDate" value="nowDateTime"/>
+                </if>
+            </if>
+            <elif key="step" value="通过">
+                <if key="actualDate" value="empty">
+                    <prop key="actualDate" value="nowDateTime"/>
+                </if>
+            </elif>
+            <else>
+                <prop key="actualDate" value="null"/>
+            </else>
+        </beforeSave>
+    </panel>
+</app>

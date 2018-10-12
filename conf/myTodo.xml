@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<entity quickAdd="title">
+	<status type="checkbox" title="状态">
+        <completed title="完成"/>
+        <unCompleted title="未完成"/>
+    </status>
+    <title type="text" title="标题"/>
+    <type type="select" default="other" title="分类">
+        <zp title="招聘"/>
+        <xq title="需求跟进"/>
+		<other title="其它"/>
+    </type>
+    <addDate type="date" title="增加时间" default="nowDate"/>
+    <planDate type="date" title="计划时间" default="nowDate"/>
+    <actualDate type="date" title="完成时间"/>
+	<remark type="text" title="备注"/>
+</entity>

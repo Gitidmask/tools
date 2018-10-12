@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<entity quickAdd="username">
+	<project type="select" title="租户" default="other">
+		<nxgx title="系统1"/>
+		<other title="其它"/>
+	</project>
+	<env type="select" title="环境" default="dev">
+		<dev title="开发"/>
+		<test title="测试"/>
+		<pre title="预发"/>
+		<prd title="生产"/>
+	</env>
+    <username type="text" title="用户名"/>
+	<tenant type="text" title="租户"/>
+	<puid type="text" title="用户编号"/>
+	<password type="password" title="密码"/>
+	<remark type="text" title="备注" width="300"/>
+</entity>
