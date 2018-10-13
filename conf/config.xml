@@ -59,31 +59,6 @@
         </beforeSave>
     </panel>
 
-    <panel title="系统用户" configFile="user" display="true">
-		<rowFill>
-            <if key="env" value="开发" ret="#0C561C"/>
-            <elif key="env" value="测试" ret="#4E5D09"/>
-            <elif key="env" value="生产" ret="#870E0E"/>
-            <else ret="black"/>
-        </rowFill>
-        <comparator>
-            <order index="1" key="project"/>
-			<order index="2" key="env"/>
-        </comparator>
-    </panel>
-
-    <panel title="环境信息" configFile="env" display="true">
-		<rowFill>
-            <if key="env" value="开发" ret="#0C561C"/>
-            <elif key="env" value="测试" ret="#4E5D09"/>
-            <elif key="env" value="生产" ret="#870E0E"/>
-            <else ret="black"/>
-        </rowFill>
-        <comparator>
-            <order index="1" key="env" value="开发,测试,预发,生产"/>
-        </comparator>
-    </panel>
-
     <panel title="招聘管理" configFile="employment">
         <rowFill>
             <if key="step" value="结束" ret="#c7c7c7"/>
