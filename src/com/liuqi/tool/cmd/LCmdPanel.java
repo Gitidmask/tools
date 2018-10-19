@@ -17,12 +17,10 @@ import javafx.stage.WindowEvent;
  * @version V1.0
  **/
 public class LCmdPanel extends BorderPane implements EventHandler<WindowEvent> {
-    private ToolBar toolBar = new ToolBar();
     private TabPane tabPane = new TabPane();
 
-    private HistoryCmdCache historyCmdCache = HistoryCmdCache.getInstance();
-
     public LCmdPanel() {
+        ToolBar toolBar = new ToolBar();
         this.setTop(toolBar);
         this.setCenter(tabPane);
 
@@ -41,6 +39,7 @@ public class LCmdPanel extends BorderPane implements EventHandler<WindowEvent> {
         newButton.setOnAction(e -> newTab());
 
         // 加载缓存的命令
+        HistoryCmdCache historyCmdCache = HistoryCmdCache.getInstance();
         historyCmdCache.getQuerySet().forEach(historyCmd -> {
             SingleCmdPanel singleCmdPanel = newTab();
             singleCmdPanel.getTitleProperty().setValue(historyCmd.getName());

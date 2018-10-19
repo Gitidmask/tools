@@ -26,6 +26,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 import java.io.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -170,8 +175,7 @@ public abstract class EntityTreeTablePanel extends LToolBarTreeTablePane<Entity>
                     } else {
                         parentEntity = selItem.getValue();
                     }
-                    List<Entity> children = (List<Entity>) parentEntity.computeIfAbsent("children", t -> new ArrayList<>(1));
-                    children.add(entity);
+                    entity.put("parentId", parentEntity.getOrDefault("id", ""));
                 }
 
                 // 设置新增时，textField中的值保存到哪个属性中
@@ -193,7 +197,7 @@ public abstract class EntityTreeTablePanel extends LToolBarTreeTablePane<Entity>
                 });
 
                 // 保存对象
-                saveRow(null != parentEntity ? parentEntity : entity);
+                saveRow(entity);
 
                 // 清空快捷添加框
                 textField.clear();
@@ -244,7 +248,7 @@ public abstract class EntityTreeTablePanel extends LToolBarTreeTablePane<Entity>
     @Override
     public void saveRow(Entity comparable) {
         if (null != this.entityService) {
-            this.entityService.save(this.entityService.getParent(comparable));
+            this.entityService.save(comparable);
 
             this.refreshData();
         }

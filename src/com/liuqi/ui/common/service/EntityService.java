@@ -21,5 +21,4 @@ import java.util.List;
 public interface EntityService {
     void save(Entity entity);
     List<Entity> list();
-    Entity getParent(Entity entity);
 }

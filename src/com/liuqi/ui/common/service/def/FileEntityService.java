@@ -68,22 +68,62 @@ public class FileEntityService implements EntityService {
     @Override
     public void save(Entity entity) {
         String id = entity.getOrDefault("id", "").toString();
+        String parentId = entity.getOrDefault("parentId", "").toString();
         if ("".equals(id)) {
             entity.put("id", UUID.randomUUID().toString());
             entity.put("createTime", new Date());
 
-            entityList.add(entity);
+            entity = ObjectUtil.copy(entity);
+
+            if (!"".equals(parentId)) {
+                Entity parentEntity = getEntity(parentId);
+
+                if (null != parentEntity) {
+                    List<Entity> children = (List<Entity>) parentEntity.computeIfAbsent("children", a -> new ArrayList<>(16));
+                    children.add(entity);
+                    save(parentEntity);
+                }
+            } else {
+                entityList.add(entity);
+            }
         } else {
-            for (int i = 0, size = entityList.size(); i < size; i++) {
-                Entity entity1 = entityList.get(i);
-                if (entity1.get("id").equals(id)) {
-                    entityList.set(i, ObjectUtil.copy(entity));
-                    break;
+            List<Entity> entityList;
+
+            if ("".equals(parentId)) {
+                entityList = this.entityList;
+            } else {
+                Entity parentEntity = getEntity(parentId);
+
+                if (null != parentEntity) {
+                    entityList = (List<Entity>) parentEntity.computeIfAbsent("children", a -> new ArrayList<>(16));
+                } else {
+                    entityList = this.entityList;
+                }
+            }
+
+            if (null != entityList) {
+                for (int i = 0, size = entityList.size(); i < size; i++) {
+                    Entity entity1 = entityList.get(i);
+                    if (entity1.get("id").equals(id)) {
+                        entityList.set(i, ObjectUtil.copy(entity));
+                        break;
+                    }
                 }
             }
         }
 
         saveToFile();
+    }
+
+    private Entity getEntity(String id) {
+        Entity parentEntity = null;
+        for (Entity pEntity : entityList) {
+            if (id.equals(pEntity.getOrDefault("id", ""))) {
+                parentEntity = pEntity;
+                break;
+            }
+        }
+        return parentEntity;
     }
 
     @Override
@@ -93,31 +133,6 @@ public class FileEntityService implements EntityService {
         }
 
         return ObjectUtil.copy(entityList);
-    }
-
-    @Override
-    public Entity getParent(Entity entity) {
-        List<Entity> list = list();
-        for (Entity pEntity : list) {
-            if (pEntity.getOrDefault("id", "").equals(entity.get("id"))) {
-                return entity;
-            }
-
-            List<Entity> children = (List<Entity>) pEntity.get("children");
-            if (null == children || 0 == children.size()) {
-                continue;
-            }
-
-            for (int i = 0, length = children.size(); i < length; i++) {
-                Entity child = children.get(i);
-                if (child.get("id").equals(entity.get("id"))) {
-                    children.set(i, entity);
-                    return pEntity;
-                }
-            }
-        }
-
-        return entity;
     }
 
     private void saveToFile() {

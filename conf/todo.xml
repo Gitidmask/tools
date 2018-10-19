@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <entity quickAdd="title">
-    <title type="text" title="标题"/>
+    <title type="text" title="标题" width="200"/>
     <type type="select" default="nxgx" title="分类">
         <nxgx title="测试系统"/>
         <other title="其它"/>

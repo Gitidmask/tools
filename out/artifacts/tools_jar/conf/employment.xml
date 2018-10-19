@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<entity quickAdd="name">
+    <name type="text" title="姓名"/>
+	<mobile type="text" title="手机"/>
+	<source type="select" title="来源" default="zl">
+		<zl title="智联招聘"/>
+		<51job title="前程无忧"/>
+		<boss title="boss"/>
+		<lp title="猎聘"/>
+		<other title="其它"/>
+	</source>
+    <addDate type="datetime" title="增加时间" default="now"/>
+    <planDate type="date" title="电面时间" default="nowDate"/>
+	<liveDate type="date" title="现场面试时间" default="无"/>
+	<step type="select" default="initial" title="状态">
+		<initial title="待电面"/>
+		<site title="待现场面试"/>
+		<pass title="通过"/>
+		<email title="邮件沟通"/>
+		<end title="结束"/>
+	</step>
+	<reason type="select" title="原因" default="telNotPass">
+	    <blank title=""/>
+		<resumeNotPass title="简历未通过"/>
+		<telNotPass title="电面未通过"/>
+		<toFar title="地点过远"/>
+		<notSite title="约现场未过来"/>
+		<noMailResp title="邮件未反馈"/>
+		<alreadyWork title="已找到工作"/>
+		<notPhoned title="未接电话"/>
+		<other title="其它"/>
+	</reason>
+    <actualDate type="datetime" title="完成时间"/>
+	<salary type="date" title="薪酬要求"/>
+	<remark type="text" title="备注" width="400"/>
+</entity>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<entity quickAdd="title">
+    <title type="text" title="标题"/>
+    <type type="select" default="nxgx" title="分类">
+        <nxgx title="测试系统"/>
+        <other title="其它"/>
+    </type>
+    <addDate type="date" title="增加时间" default="nowDate"/>
+    <planDate type="date" title="计划时间" default="nowDate"/>
+	<work type="text" title="工作量"/>
+	<step type="select" default="requirementAnalysis" title="阶段">
+		<requirementAnalysis title="需求分析"/>
+		<initial title="待分配"/>
+		<dev title="开发中"/>
+		<test title="测试中"/>
+		<confirm title="待确认"/>
+		<waitOnline title="待上线"/>
+		<close title="完成"/>
+		<completed title="已上线"/>
+	</step>
+    <actualDate type="date" title="完成时间"/>
+	<service type="text" title="服务" width="200"/>
+	<git type="text" title="分支" width="200"/>
+	<back type="text" title="后端"/>
+	<front type="select" title="前端"/>
+	<remark type="text" title="备注" width="300"/>
+</entity>
