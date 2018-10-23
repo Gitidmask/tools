@@ -18,9 +18,10 @@ import javafx.stage.WindowEvent;
  **/
 public class LCmdPanel extends BorderPane implements EventHandler<WindowEvent> {
     private TabPane tabPane = new TabPane();
+    private ToolBar toolBar;
 
     public LCmdPanel() {
-        ToolBar toolBar = new ToolBar();
+        this.toolBar = new ToolBar();
         this.setTop(toolBar);
         this.setCenter(tabPane);
 
@@ -45,6 +46,18 @@ public class LCmdPanel extends BorderPane implements EventHandler<WindowEvent> {
             singleCmdPanel.getTitleProperty().setValue(historyCmd.getName());
             singleCmdPanel.setCmds(historyCmd.getCmds());
         });
+    }
+
+    public void setTabSide(Side side) {
+        this.tabPane.setSide(side);
+    }
+
+    public void hideToolBar() {
+        this.setTop(null);
+    }
+
+    public void setTabClosable(boolean closable) {
+        this.tabPane.getTabs().forEach(tab -> tab.setClosable(closable));
     }
 
     /**

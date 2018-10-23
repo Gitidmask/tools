@@ -27,7 +27,7 @@ public final class DateUtils {
     private static ThreadLocal<SimpleDateFormat> timeFormatThreadLocal = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     
     /**
-     * 日期串格式化，格式：yyyy-MM-dd HH:mm:ss
+     * 日期串格式化，格式：yyyy-MM-dd
      * 线程安全
      *
      * @param date 需要格式化的日期串
@@ -36,7 +36,18 @@ public final class DateUtils {
     public static String format(Date date) {
         return dateFormatThreadLocal.get().format(date);
     }
-    
+
+    /**
+     * 日期串格式化，格式：yyyy-MM-dd HH:mm:ss
+     * 线程安全
+     *
+     * @param date 需要格式化的日期串
+     * @return 返回格式化后的字符串
+     */
+    public static String formatTime(Date date) {
+        return timeFormatThreadLocal.get().format(date);
+    }
+
     /**
      * 由字符串转换成日期
      * 线程安全
@@ -49,7 +60,7 @@ public final class DateUtils {
     public static Date parse(String dateFormat) throws ParseException {
         return dateFormatThreadLocal.get().parse(dateFormat);
     }
-    
+
     /**
      * 获取当前时间的字符串
      *

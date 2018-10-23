@@ -3,6 +3,7 @@ package com.liuqi.ui.common.components.table;
 import com.liuqi.ui.common.apps.PanelConfig;
 import com.liuqi.ui.common.entity.Entity;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ToolBar;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -28,12 +29,12 @@ public class ConfigEntityTablePanel extends AbstractEntityTablePanel {
 
     private ConfigEntityTablePanel(PanelConfig panelConfig) {
         this.panelConfig = panelConfig;
-        this.setConfigFile(panelConfig.getEntityConfigFile());
+        this.initWithConfigFile(panelConfig.getEntityConfigFile());
     }
 
     @Override
-    public void initToolBar() {
-        super.initToolBar();
+    public void initToolBar(ToolBar toolBar) {
+        super.initToolBar(toolBar);
         List<ComboBox<String>> comboBoxList = panelConfig.getToolbarComboBoxList();
 
         if (null == comboBoxList) {
@@ -47,7 +48,7 @@ public class ConfigEntityTablePanel extends AbstractEntityTablePanel {
                 return;
             }
 
-            ConfigEntityTablePanel.this.toolBar.getItems().add(comboBox);
+            toolBar.getItems().add(comboBox);
             comboBox.setOnAction(event -> {
                 List<Entity> dataList = ConfigEntityTablePanel.this.getItems();
                 List<Entity> filterList = dataList.stream().filter(filter).collect(Collectors.toList());

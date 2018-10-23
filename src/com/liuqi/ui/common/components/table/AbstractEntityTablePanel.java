@@ -19,10 +19,7 @@ import com.liuqi.ui.common.service.def.FileEntityService;
 import com.liuqi.ui.common.service.ServiceFactory;
 import com.liuqi.util.DateUtils;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.KeyCode;
@@ -40,14 +37,14 @@ import java.util.*;
  * @author LiuQI 2018/7/10 11:24
  * @version V1.0
  **/
-public abstract class AbstractEntityTablePanel extends AbstractLToolBarTablePane<Entity> {
+public abstract class AbstractEntityTablePanel extends AbstractTablePane<Entity> {
     private EntityConfig entityConfig;
     private EntityService entityService;
 
     private List<Entity> dataList;
     private String configFileName;
 
-    public void setConfigFile(String configFile) {
+    public void initWithConfigFile(String configFile) {
         this.configFileName = configFile;
         this.entityConfig = new EntityConfig("conf/" + configFile + ".xml");
         this.entityService = entityConfig.getEntityService();
@@ -66,10 +63,10 @@ public abstract class AbstractEntityTablePanel extends AbstractLToolBarTablePane
     @Override
     public void afterConstruct() {
         // 可以选择单元格
-        this.tableView.getSelectionModel().cellSelectionEnabledProperty().setValue(true);
+        this.getTableView().getSelectionModel().cellSelectionEnabledProperty().setValue(true);
 
         // 可以多选
-        this.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        this.getTableView().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         // 按ctrl + c时复制当前单元格
         setCopyAction();
@@ -79,9 +76,9 @@ public abstract class AbstractEntityTablePanel extends AbstractLToolBarTablePane
      * 按ctrl+C时将所选择的内容复制到系统粘贴板
      */
     private void setCopyAction() {
-        this.tableView.setOnKeyPressed(event -> {
+        this.getTableView().setOnKeyPressed(event -> {
            if (event.getCode() == KeyCode.C && event.isControlDown()) {
-               ObservableList<TablePosition> selectedCells = this.tableView.getSelectionModel().getSelectedCells();
+               ObservableList<TablePosition> selectedCells = this.getTableView().getSelectionModel().getSelectedCells();
                if (null != selectedCells && 0 != selectedCells.size()) {
                    TablePosition position = selectedCells.get(0);
                    int row = position.getRow();
@@ -111,23 +108,23 @@ public abstract class AbstractEntityTablePanel extends AbstractLToolBarTablePane
                 switch (type) {
                     case SELECT: {
                         if (null != attributeConfig.getSelectItems()) {
-                            tableView.addComboBoxColumn(attributeConfig.getTitle(), attributeConfig.getKey(),
+                            getTableView().addComboBoxColumn(attributeConfig.getTitle(), attributeConfig.getKey(),
                                     attributeConfig.getSelectItems());
                         } else {
-                            tableView.addColumn(attributeConfig.getTitle(), attributeConfig.getKey());
+                            getTableView().addColumn(attributeConfig.getTitle(), attributeConfig.getKey());
                         }
 
                         break;
                     }
                     case CHECKBOX: {
-                        tableView.addCheckBoxColumn(attributeConfig.getTitle(), attributeConfig.getKey());
+                        getTableView().addCheckBoxColumn(attributeConfig.getTitle(), attributeConfig.getKey());
                         break;
                     }
                     default: {
                         if (0 != attributeConfig.getWidth()) {
-                            tableView.addColumn(attributeConfig.getTitle(), attributeConfig.getKey(), attributeConfig.getWidth());
+                            getTableView().addColumn(attributeConfig.getTitle(), attributeConfig.getKey(), attributeConfig.getWidth());
                         } else {
-                            tableView.addColumn(attributeConfig.getTitle(), attributeConfig.getKey());
+                            getTableView().addColumn(attributeConfig.getTitle(), attributeConfig.getKey());
                         }
                     }
                 }
@@ -136,15 +133,15 @@ public abstract class AbstractEntityTablePanel extends AbstractLToolBarTablePane
     }
 
     @Override
-    public void initToolBar() {
+    public void initToolBar(ToolBar toolBar) {
         initToolbarQuickAddFunction();
 
         initToolbarSearchField();
 
         // 添加导出按钮
         Button exportButton = new Button("导出");
-        exportButton.setOnAction(e -> ExcelExportDialogProxy.INSTANCE.saveFile(tableView, configFileName + ".xls"));
-        this.toolBar.getItems().add(exportButton);
+        exportButton.setOnAction(e -> ExcelExportDialogProxy.INSTANCE.saveFile(getTableView(), configFileName + ".xls"));
+        toolBar.getItems().add(exportButton);
 
         // 添加导入按钮
         initImportButton();
@@ -156,7 +153,7 @@ public abstract class AbstractEntityTablePanel extends AbstractLToolBarTablePane
     private void initToolbarQuickAddFunction() {
         TextField textField = new TextField();
         textField.setPromptText("添加新记录...");
-        this.toolBar.getItems().add(textField);
+        this.getToolBar().getItems().add(textField);
 
         textField.setOnKeyReleased(event -> {
             if (KeyCode.ENTER == event.getCode()) {
@@ -196,7 +193,7 @@ public abstract class AbstractEntityTablePanel extends AbstractLToolBarTablePane
     private void initToolbarSearchField() {
         TextField searchField = new TextField();
         searchField.setPromptText("输入关键字并回车进行查询...");
-        this.toolBar.getItems().add(searchField);
+        this.getToolBar().getItems().add(searchField);
         searchField.setPrefWidth(200);
 
         searchField.setOnKeyReleased(event -> {
@@ -208,8 +205,8 @@ public abstract class AbstractEntityTablePanel extends AbstractLToolBarTablePane
 
             if (null == dataList) {
                 // 存储原始数据
-                dataList = new ArrayList<>(tableView.getItems().size());
-                dataList.addAll(tableView.getItems());
+                dataList = new ArrayList<>(getTableView().getItems().size());
+                dataList.addAll(getTableView().getItems());
             }
 
             // 根据关键字进行筛选
@@ -233,8 +230,8 @@ public abstract class AbstractEntityTablePanel extends AbstractLToolBarTablePane
                 }
             });
 
-            tableView.getItems().clear();
-            tableView.getItems().addAll(leftList);
+            getTableView().getItems().clear();
+            getTableView().getItems().addAll(leftList);
         });
     }
 
@@ -243,7 +240,7 @@ public abstract class AbstractEntityTablePanel extends AbstractLToolBarTablePane
      */
     private void initImportButton() {
         Button importButton = new Button("导入");
-        this.toolBar.getItems().add(importButton);
+        this.getToolBar().getItems().add(importButton);
         importButton.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             File file = fileChooser.showOpenDialog(null);

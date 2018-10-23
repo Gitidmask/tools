@@ -52,7 +52,7 @@ public class SingleCmdPanel extends SplitPane implements EventHandler<WindowEven
             e.printStackTrace();
         }
 
-        this.setOrientation(Orientation.VERTICAL);
+        this.setOrientation(Orientation.HORIZONTAL);
         this.getItems().addAll(inputArea, logArea);
         this.setDividerPositions(0.4);
 
@@ -61,9 +61,11 @@ public class SingleCmdPanel extends SplitPane implements EventHandler<WindowEven
             OutputStream outputStream = process.getOutputStream();
             PrintWriter writer = new PrintWriter(outputStream);
             writer.println("d:");
-            writer.println("cd d:/projects/ninxia");
+            writer.println("cd d:/projects/");
             writer.flush();
         }
+
+        inputArea.setText("d:\rcd d:/projects/\r");
 
         inputArea.setOnKeyPressed(event -> {
             if (event.isControlDown() && KeyCode.ENTER == event.getCode()) {

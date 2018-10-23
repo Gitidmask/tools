@@ -10,10 +10,11 @@ package com.liuqi.tool;
 
 import com.liuqi.tool.cmd.LCmdPanel;
 import com.liuqi.tool.httptool.HttpToolMainPane;
+import com.liuqi.tool.other.OtherToolPanel;
 import com.liuqi.ui.common.apps.AppConfig;
 import com.liuqi.ui.common.apps.PanelConfig;
 import com.liuqi.ui.common.components.table.ConfigEntityTablePanel;
-import com.liuqi.ui.common.components.table.ConfigEntityTreeTablePanel;
+import com.liuqi.ui.common.components.treetable.ConfigEntityTreeTablePanel;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -22,11 +23,9 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -78,10 +77,12 @@ public class MainApplication extends Application {
         LCmdPanel lCmdPanel = new LCmdPanel();
         tabPane.getTabs().add(createTab("CMD", lCmdPanel));
 
+        tabPane.getTabs().add(createTab("其它", new OtherToolPanel()));
+
         // 面板关闭时退出后台线程
         primaryStage.setOnCloseRequest(event -> {
             borderPane.handle(event);
-            lCmdPanel.handle(event);
+//            lCmdPanel.handle(event);
             System.exit(0);
         });
 
