@@ -82,7 +82,7 @@ public class MainApplication extends Application {
         // 面板关闭时退出后台线程
         primaryStage.setOnCloseRequest(event -> {
             borderPane.handle(event);
-//            lCmdPanel.handle(event);
+            lCmdPanel.handle(event);
             System.exit(0);
         });
 
